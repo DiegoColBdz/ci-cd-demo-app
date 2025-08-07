@@ -1,0 +1,12 @@
+{
+  "name": "mi-app-cicd",
+  "version": "1.0.0",
+  "description": "Ejemplo básico de CI/CD",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node -e \"console.log('App iniciada')\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

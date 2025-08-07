@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+# Cuándo se ejecuta este workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Trabajos a ejecutar
+jobs:
+  # Trabajo de CI (Integración Continua)
+  ci:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Paso 1: Descargar el código
+    - name: Descargar código
+      uses: actions/checkout@v3
+    
+    # Paso 2: Configurar Node.js
+    - name: Configurar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    # Paso 3: Instalar dependencias
+    - name: Instalar dependencias
+      run: npm install
+    
+    # Paso 4: Ejecutar pruebas
+    - name: Ejecutar pruebas
+      run: npm test
+    
+    # Paso 5: Construir aplicación (en este caso, solo mostrar archivos)
+    - name: Construir aplicación
+      run: |
+        echo "🔨 Construyendo aplicación..."
+        ls -la
+        echo "✅ Construcción completada"
+  
+  # Trabajo de CD (Despliegue Continuo)
+  # Solo se ejecuta si CI pasa exitosamente
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Descargar código
+      uses: actions/checkout@v3
+    
+    # Simulamos un despliegue
+    - name: Desplegar a producción
+      run: |
+        echo "🚀 Desplegando a producción..."
+        echo "📁 Archivos a desplegar:"
+        ls -la *.html *.js
+        echo "✅ ¡Despliegue completado!"
+        echo "🌐 Tu app está disponible en: https://mi-app.com"
