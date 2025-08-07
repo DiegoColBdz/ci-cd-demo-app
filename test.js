@@ -1,7 +1,7 @@
 // Importar la función a probar
 const { sumar } = require('./app.js');
 
-// Función de testing casera (normalmente usarías Jest, Mocha, etc.)
+// Función de testing casera
 function probarSuma() {
     console.log('🧪 Ejecutando pruebas...');
     
