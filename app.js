@@ -3,10 +3,13 @@ function sumar(a, b) {
     return a + b; // Volvemos a la suma correcta
 }
 
-// El resto del código igual...
-document.getElementById('resultado').innerHTML = 
-    'La suma de 5 + 3 es: ' + sumar(5, 3); // Ahora mostrará 15 en lugar de 8
+// Mostrar en navegador solamente
+if (typeof document !== 'undefined') {
+    document.getElementById('resultado').innerHTML = 
+        'La suma de 5 + 3 es: ' + sumar(5, 3);
+}
 
+// Exportar para testing en Node.js
 if (typeof module !== 'undefined') {
     module.exports = { sumar };
 }
