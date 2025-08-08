@@ -1,63 +1,46 @@
 pipeline {
-    agent {
-        label 'ubuntu' // or just use any if you don't have a label
-    }
-
+    agent any
+    
     triggers {
-        // Polling alternative; use webhook for real-time
-        // pollSCM('* * * * *') // Every minute
+        githubPush()
     }
-
-    environment {
-        NODE_VERSION = '18'
-    }
-
+    
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-
-        stage('Setup Node.js') {
-            steps {
-                echo "⚙️ Configurando Node.js v${env.NODE_VERSION}"
-                // Requires NodeJS plugin and configuration under Global Tools
-                tool name: "NodeJS-${env.NODE_VERSION}", type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-            }
-        }
-
+        
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                // Adjust based on your project type
+                sh 'npm install'  // For Node.js
+                // sh 'pip install -r requirements.txt'  // For Python
+                // sh 'mvn clean compile'  // For Maven
             }
         }
-
-        stage('Run Tests') {
+        
+        stage('Test') {
             steps {
-                sh 'npm test'
+                // Adjust based on your project type
+                sh 'npm test'  // For Node.js
+                // sh 'python -m pytest'  // For Python
+                // sh 'mvn test'  // For Maven
             }
         }
-
-        stage('Build') {
-            steps {
-                echo "🔨 Construyendo aplicación..."
-                sh 'ls -la'
-                echo "✅ Construcción completada"
-            }
+    }
+    
+    post {
+        always {
+            // Clean workspace
+            cleanWs()
         }
-
-        stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
-            steps {
-                echo "🚀 Desplegando a producción..."
-                echo "📁 Archivos a desplegar:"
-                sh 'ls -la *.html *.js || true' // Avoid error if no .html/.js found
-                echo "✅ ¡Despliegue completado!"
-                echo "🌐 Tu app está disponible en: https://mi-app.com"
-            }
+        success {
+            echo 'Tests passed successfully!'
+        }
+        failure {
+            echo 'Tests failed!'
         }
     }
 }
