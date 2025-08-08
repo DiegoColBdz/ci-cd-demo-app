@@ -1,46 +1,30 @@
 pipeline {
-    agent any
-    
-    triggers {
-        githubPush()
+    agent {
+        docker {
+            image 'node:18' // Imagen oficial de Node.js
+            args '-p 3000:3000' // Si quieres exponer puertos
+        }
     }
-    
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
-        
         stage('Install Dependencies') {
             steps {
-                // Adjust based on your project type
-                sh 'npm install'  // For Node.js
-                // sh 'pip install -r requirements.txt'  // For Python
-                // sh 'mvn clean compile'  // For Maven
+                sh 'npm install'
             }
         }
-        
         stage('Test') {
             steps {
-                // Adjust based on your project type
-                sh 'npm test'  // For Node.js
-                // sh 'python -m pytest'  // For Python
-                // sh 'mvn test'  // For Maven
+                sh 'npm test'
             }
         }
-    }
-    
-    post {
-        always {
-            // Clean workspace
-            cleanWs()
-        }
-        success {
-            echo 'Tests passed successfully!'
-        }
-        failure {
-            echo 'Tests failed!'
+        stage('Build') {
+            steps {
+                sh 'echo "✅ Build completado"'
+            }
         }
     }
 }
