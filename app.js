@@ -1,6 +1,6 @@
 // ✅ BUG CORREGIDO
 function sumar(a, b) {
-    return a + b; // Volvemos a la suma correcta
+    return a * b; // Volvemos a la suma correcta
 }
 
 // Mostrar en navegador solamente
