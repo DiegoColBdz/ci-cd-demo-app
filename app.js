@@ -1,6 +1,6 @@
-// 🐛 BUG INTRODUCIDO INTENCIONALMENTE
+// ✅ BUG CORREGIDO
 function sumar(a, b) {
-    return a * b; // ❌ Cambié + por * (multiplicar en lugar de sumar)
+    return a + b; // Volvemos a la suma correcta
 }
 
 // El resto del código igual...
